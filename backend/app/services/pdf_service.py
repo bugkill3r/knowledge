@@ -306,7 +306,8 @@ def get_pdf_service() -> PDFService:
     global _pdf_service
     
     if _pdf_service is None:
-        _pdf_service = PDFService()
+        path = (getattr(settings, "PDF2MD_PATH", None) or "").strip() or None
+        _pdf_service = PDFService(pdf2md_path=path or "")
     
     return _pdf_service
 

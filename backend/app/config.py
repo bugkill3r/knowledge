@@ -51,6 +51,8 @@ class Settings(BaseSettings):
         return bool((self.OBSIDIAN_VAULT_PATH or "").strip())
 
     CHROMA_DB_PATH: str = "./data/chromadb"
+    # Optional: path to pdf2md CLI (https://github.com/bugkill3r/pdf2md) for PDF image extraction
+    PDF2MD_PATH: Optional[str] = None
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30

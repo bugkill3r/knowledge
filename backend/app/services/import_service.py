@@ -25,7 +25,8 @@ class ImportService:
         self.access_token = access_token
         self.google_docs_service = GoogleDocsService(access_token)
         self.google_sheets_service = GoogleSheetsService(access_token)
-        self.pdf_service = PDFService()
+        path = (getattr(settings, "PDF2MD_PATH", None) or "").strip() or ""
+        self.pdf_service = PDFService(pdf2md_path=path)
         self.document_service = DocumentService(db)
     
     async def import_from_url(
