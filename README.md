@@ -60,3 +60,14 @@ Open http://localhost:3000. New users see a short **onboarding** (e.g. “Do you
   - **UNDERSTANDING.md** – Architecture, config, flows, key files
 
 No org-specific branding in code. Set `PROJECT_NAME` and `NEXT_PUBLIC_APP_NAME` for any team or project.
+
+---
+
+## Screenshots
+
+| Landing | Dashboard | Onboarding |
+|---------|-----------|------------|
+| ![Landing](docs/screenshots/landing.png) | ![Dashboard](docs/screenshots/dashboard.png) | ![Onboarding](docs/screenshots/onboarding1.png) |
+
+Onboarding steps: `onboarding1.png`, `onboarding2.png`, `onboarding3.png`. Also in `docs/screenshots/`: `landing.png`, `dashboard.png`.
+
