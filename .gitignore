@@ -1,0 +1,55 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+!.env.local.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/venv/
+venv/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Backend data and DB
+backend/data/
+*.db
+*.sqlite
+knowledge.db
+
+# Node / Next
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+.npm
+.yarn/
+
+# IDE and OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+*.log
+*.tmp
+.cache/
+
+# IDE / Cursor – avoid pushing conversations, state, or local config
+.cursor/
+*.cursor*
+
+# Local-only: plans, progress log, research notes (do not push)
+GENERIC_KNOWLEDGE_SYSTEM_PLAN.md
+docs/PROGRESS.md
+docs/RESEARCH.md

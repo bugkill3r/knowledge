@@ -1,0 +1,57 @@
+# FastAPI and server
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.20
+
+# Database
+sqlalchemy>=2.0.36
+alembic==1.13.1
+aiosqlite==0.19.0
+
+# Vector database (chromadb 0.4.x needs numpy<2)
+chromadb==0.4.22
+numpy<2
+
+# Google APIs
+google-auth==2.27.0
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
+google-api-python-client==2.116.0
+
+# AI/ML
+openai==1.10.0
+anthropic==0.18.1
+sentence-transformers>=2.3.1
+
+# Document processing
+beautifulsoup4==4.12.3
+markdownify==0.11.6
+python-docx==1.1.0
+PyPDF2==3.0.1
+
+# Utilities
+python-dotenv==1.0.1
+pydantic>=2.10.0
+pydantic-settings==2.1.0
+pyyaml==6.0.1
+click==8.1.7
+rich==13.7.0
+httpx==0.26.0
+
+# Date/Time
+python-dateutil==2.8.2
+pytz==2024.1
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.4
+
+# Code parsing
+tree-sitter>=0.25.0
+tree-sitter-go>=0.25.0
+
+# Development
+black==24.1.1
+flake8==7.0.0
+mypy==1.8.0
+

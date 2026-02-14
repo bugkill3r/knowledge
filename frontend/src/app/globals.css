@@ -1,0 +1,339 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg, 
+    hsl(var(--muted-foreground)) 0%, 
+    hsl(var(--muted-foreground)) 35%, 
+    hsl(var(--foreground)) 50%, 
+    hsl(var(--muted-foreground)) 65%, 
+    hsl(var(--muted-foreground)) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* Basic syntax highlighting for code blocks */
+code {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+pre code {
+  display: block;
+  line-height: 1.6;
+}
+
+/* Simple syntax highlighting patterns */
+pre code .keyword {
+  color: hsl(286, 60%, 67%);
+}
+
+pre code .function {
+  color: hsl(207, 82%, 66%);
+}
+
+pre code .string {
+  color: hsl(95, 38%, 62%);
+}
+
+pre code .comment {
+  color: hsl(210, 20%, 50%);
+  font-style: italic;
+}
+
+pre code .number {
+  color: hsl(29, 54%, 61%);
+}
+
+@layer base {
+  :root {
+    --background: 210 15% 3%;
+    --foreground: 210 40% 98%;
+    --card: 210 15% 4%;
+    --card-bg: 210 15% 4%;
+    --card-hover: 210 15% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 210 15% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-purple: 259 79% 62%;
+    --primary-blue: 217 91% 59%;
+    --primary-foreground: 210 15% 3%;
+    --secondary: 210 15% 8%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 210 15% 8%;
+    --muted-foreground: 210 20% 65%;
+    --accent: 210 15% 8%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 210 15% 12%;
+    --input: 210 15% 8%;
+    --ring: 212 15% 85%;
+    --radius: 0.5rem;
+    --sidebar-bg: 210 15% 3%;
+    --sidebar-hover: 210 15% 6%;
+    --success-green: 142 76% 36%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html,
+  body {
+    @apply bg-background text-foreground;
+    background: hsl(210 15% 3%);
+    
+    /* Linear's font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: none;
+    
+    /* Inter Variable font features */
+    font-feature-settings: "cv01", "ss03";
+    font-variation-settings: "opsz" auto;
+    line-height: 1.5;
+  }
+}
+
+@layer components {
+  .modern-card {
+    @apply relative overflow-hidden;
+    background: hsl(210 15% 4%);
+    border: 1px solid hsl(210 15% 12%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 
+      0 4px 16px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .modern-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(147, 51, 234, 0.03) 0%,
+      rgba(59, 130, 246, 0.03) 50%,
+      rgba(147, 51, 234, 0.03) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .modern-card:hover::before {
+    opacity: 1;
+  }
+  
+  .modern-card:hover {
+    transform: translateY(-1px);
+    background: hsl(210 15% 5%);
+    border-color: hsl(210 15% 15%);
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+      0 0 16px rgba(147, 51, 234, 0.1);
+  }
+}
+
+/* Custom inputs */
+input[type="date"],
+select {
+  background: hsl(210 15% 8%);
+  border: 1px solid hsl(210 15% 12%);
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+input[type="date"]:focus,
+select:focus {
+  outline: none;
+  border-color: hsl(259 79% 62%);
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+}
+
+input[type="date"]:hover,
+select:hover {
+  border-color: hsl(210 15% 15%);
+  background: hsl(210 15% 10%);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(210 15% 4%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(210 15% 15%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(210 15% 20%);
+}
+
+/* Custom scrollbar for specific elements */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(210 15% 12%);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(210 15% 18%);
+}
+
+/* Selection */
+::selection {
+  background: rgba(147, 51, 234, 0.3);
+  color: white;
+}
+
+/* Prose styling for AI answers */
+.prose {
+  max-width: none;
+  color: hsl(210 40% 98%);
+}
+
+.prose p {
+  margin-bottom: 1em;
+  line-height: 1.7;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: hsl(210 40% 98%);
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  line-height: 1.3;
+}
+
+.prose h1 {
+  font-size: 1.5em;
+}
+
+.prose h2 {
+  font-size: 1.3em;
+  border-bottom: 1px solid hsl(210 15% 12%);
+  padding-bottom: 0.3em;
+}
+
+.prose h3 {
+  font-size: 1.15em;
+}
+
+.prose strong {
+  color: hsl(210 40% 98%);
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+  color: hsl(210 30% 85%);
+}
+
+.prose ul, .prose ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin: 0.5em 0;
+  line-height: 1.6;
+}
+
+.prose li::marker {
+  color: hsl(217 91% 59%);
+}
+
+.prose code {
+  background: hsl(210 15% 8%);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+  color: hsl(217 91% 59%);
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+}
+
+.prose pre {
+  background: hsl(210 15% 8%);
+  padding: 1em;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1em 0;
+  border: 1px solid hsl(210 15% 12%);
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  color: hsl(210 40% 98%);
+  font-size: 0.875em;
+}
+
+.prose a {
+  color: hsl(217 91% 59%);
+  text-decoration: underline;
+  text-decoration-color: hsl(217 91% 59% / 0.3);
+  transition: all 0.2s ease;
+}
+
+.prose a:hover {
+  text-decoration-color: hsl(217 91% 59%);
+}
+
+.prose blockquote {
+  border-left: 3px solid hsl(217 91% 59%);
+  padding-left: 1em;
+  margin: 1em 0;
+  color: hsl(210 30% 80%);
+  font-style: italic;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid hsl(210 15% 12%);
+  margin: 2em 0;
+}
