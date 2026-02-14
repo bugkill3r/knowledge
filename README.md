@@ -65,9 +65,19 @@ No org-specific branding in code. Set `PROJECT_NAME` and `NEXT_PUBLIC_APP_NAME` 
 
 ## Screenshots
 
-| Landing | Dashboard | Onboarding |
-|---------|-----------|------------|
-| ![Landing](docs/screenshots/landing.png) | ![Dashboard](docs/screenshots/dashboard.png) | ![Onboarding](docs/screenshots/onboarding1.png) |
+**Landing**
 
-Onboarding steps: `onboarding1.png`, `onboarding2.png`, `onboarding3.png`. Also in `docs/screenshots/`: `landing.png`, `dashboard.png`.
+![Landing](docs/screenshots/landing.png)
+
+**Onboarding**
+
+![Onboarding 1](docs/screenshots/onboarding1.png)
+
+![Onboarding 2](docs/screenshots/onboarding2.png)
+
+![Onboarding 3](docs/screenshots/onboarding3.png)
+
+**Dashboard**
+
+![Dashboard](docs/screenshots/dashboard.png)
 
