@@ -22,6 +22,7 @@
 | What we did and why | `docs/PROGRESS.md`, `docs/RESEARCH.md` |
 | How it works | `docs/UNDERSTANDING.md` |
 | Full migration plan | `GENERIC_KNOWLEDGE_SYSTEM_PLAN.md` |
+| Agent loop and code guidelines | `docs/AGENT_GUIDELINES.md` |
 
 ## Conventions
 
@@ -33,4 +34,5 @@
 
 1. **Research:** Read `UNDERSTANDING.md` + the relevant service/API. Compress to “what exists, where, how it’s wired.”
 2. **Plan:** Explicit steps, file:line where useful, “what we’re NOT doing.” Review plan before coding.
-3. **Implement:** Execute plan; keep context small. After a phase, optionally compress progress into `PROGRESS.md`.
+3. **Implement:** Execute plan; follow `docs/AGENT_GUIDELINES.md`. Keep context small.
+4. **Verify:** Confirm no new guideline violations; optionally compress progress into `PROGRESS.md`.

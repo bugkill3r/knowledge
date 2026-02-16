@@ -1,4 +1,5 @@
 """Google Docs service for fetching and converting documents"""
+import logging
 import re
 from typing import Optional, Dict, List, Tuple
 from googleapiclient.discovery import build
@@ -6,6 +7,8 @@ from googleapiclient.errors import HttpError
 from google.auth.credentials import Credentials as BaseCredentials
 from bs4 import BeautifulSoup
 from markdownify import markdownify as md
+
+logger = logging.getLogger(__name__)
 
 
 class AccessTokenCredentials(BaseCredentials):
@@ -69,17 +72,9 @@ class GoogleDocsService:
         """Fetch document from Google Docs API"""
         try:
             document = self.docs_service.documents().get(documentId=doc_id).execute()
-            
-            # DEBUG: Save document structure to file for inspection
-            import json
-            debug_file = f"/tmp/gdoc_{doc_id}_structure.json"
-            with open(debug_file, 'w') as f:
-                json.dump(document, f, indent=2)
-            print(f"[DEBUG] Saved document structure to: {debug_file}")
-            
             return document
         except HttpError as e:
-            print(f"Error fetching document {doc_id}: {e}")
+            logger.error("Error fetching document %s: %s", doc_id, e)
             return None
     
     async def get_document_metadata(self, doc_id: str) -> Optional[Dict]:
@@ -91,7 +86,7 @@ class GoogleDocsService:
             ).execute()
             return metadata
         except HttpError as e:
-            print(f"Error fetching metadata for {doc_id}: {e}")
+            logger.error("Error fetching metadata for %s: %s", doc_id, e)
             return None
     
     def extract_links(self, document: Dict) -> List[str]:
@@ -105,22 +100,17 @@ class GoogleDocsService:
                 if 'richLink' in content:
                     rich_link_props = content['richLink'].get('richLinkProperties', {})
                     url = rich_link_props.get('uri', '')
-                    if url:
-                        print(f"[DEBUG] Found richLink at depth {depth}: {url}")
-                        if 'docs.google.com/document' in url:
-                            links.append(url)
-                            print(f"[DEBUG] ✓ Added Google Doc richLink: {url}")
-                
-                # Check for links in text runs
+                    if url and 'docs.google.com/document' in url:
+                        links.append(url)
+                        logger.debug("Found Google Doc richLink at depth %s: %s", depth, url)
+
                 if 'textRun' in content:
                     text_style = content['textRun'].get('textStyle', {})
                     link = text_style.get('link', {})
                     url = link.get('url', '')
-                    if url:
-                        print(f"[DEBUG] Found textRun link at depth {depth}: {url}")
-                        if 'docs.google.com/document' in url:
-                            links.append(url)
-                            print(f"[DEBUG] ✓ Added Google Doc textRun link: {url}")
+                    if url and 'docs.google.com/document' in url:
+                        links.append(url)
+                        logger.debug("Found Google Doc textRun link at depth %s: %s", depth, url)
                 
                 # Recursively check all dict values
                 for key, value in content.items():
@@ -131,9 +121,9 @@ class GoogleDocsService:
                     traverse_content(item, depth + 1)
         
         traverse_content(document)
-        print(f"[DEBUG] Total Google Docs links found: {len(links)}")
-        return list(set(links))  # Remove duplicates
-    
+        logger.debug("Total Google Docs links found: %s", len(links))
+        return list(set(links))
+
     def extract_sheets_links(self, document: Dict) -> List[str]:
         """Extract all Google Sheets links from a document"""
         sheets_links = []
@@ -146,22 +136,17 @@ class GoogleDocsService:
                     rich_link_props = content['richLink'].get('richLinkProperties', {})
                     url = rich_link_props.get('uri', '')
                     mime_type = rich_link_props.get('mimeType', '')
-                    if url:
-                        print(f"[DEBUG] Found richLink at depth {depth}: {url} (mime: {mime_type})")
-                        if 'docs.google.com/spreadsheets' in url or mime_type == 'application/vnd.google-apps.spreadsheet':
-                            sheets_links.append(url)
-                            print(f"[DEBUG] ✓ Added Google Sheets richLink: {url}")
-                
-                # Check for links in text runs
+                    if url and ('docs.google.com/spreadsheets' in url or mime_type == 'application/vnd.google-apps.spreadsheet'):
+                        sheets_links.append(url)
+                        logger.debug("Found Google Sheets richLink at depth %s: %s", depth, url)
+
                 if 'textRun' in content:
                     text_style = content['textRun'].get('textStyle', {})
                     link = text_style.get('link', {})
                     url = link.get('url', '')
-                    if url:
-                        print(f"[DEBUG] Found textRun link at depth {depth}: {url}")
-                        if 'docs.google.com/spreadsheets' in url:
-                            sheets_links.append(url)
-                            print(f"[DEBUG] ✓ Added Google Sheets textRun link: {url}")
+                    if url and 'docs.google.com/spreadsheets' in url:
+                        sheets_links.append(url)
+                        logger.debug("Found Google Sheets textRun link at depth %s: %s", depth, url)
                 
                 # Recursively check all dict values
                 for key, value in content.items():
@@ -172,8 +157,8 @@ class GoogleDocsService:
                     traverse_content(item, depth + 1)
         
         traverse_content(document)
-        print(f"[DEBUG] Total Google Sheets links found: {len(sheets_links)}")
-        return list(set(sheets_links))  # Remove duplicates
+        logger.debug("Total Google Sheets links found: %s", len(sheets_links))
+        return list(set(sheets_links))
     
     def convert_to_markdown(self, document: Dict) -> Tuple[str, str]:
         """Convert Google Docs document to markdown
@@ -282,7 +267,7 @@ class GoogleDocsService:
             
             return export_result.decode('utf-8')
         except HttpError as e:
-            print(f"Error exporting document {doc_id} as HTML: {e}")
+            logger.error("Error exporting document %s as HTML: %s", doc_id, e)
             return None
     
     async def get_document_with_links(self, doc_id: str) -> Tuple[Optional[Dict], List[str], Optional[Dict]]:

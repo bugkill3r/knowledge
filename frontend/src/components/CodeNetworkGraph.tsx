@@ -58,9 +58,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ data, fullscreen = false })
     // Separate repositories and contributors by ID prefix
     const repositories = rawNodes.filter(node => node.id.startsWith('repo-'));
     const contributors = rawNodes.filter(node => node.id.startsWith('contrib-'));
-    
-    console.log(`Found ${repositories.length} repositories and ${contributors.length} contributors`);
-    
+
     // Create connection map
     const edgeMap = new Map<string, Set<string>>();
     rawEdges.forEach(edge => {
@@ -203,7 +201,6 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ data, fullscreen = false })
 
   const handleNodeClick = useCallback((node: ProcessedNode) => {
     setSelectedNode(selectedNode === node.id ? null : node.id);
-    console.log(`${node.nodeType} clicked:`, node.data.label);
   }, [selectedNode]);
 
   // Optimized styling functions - memoize to reduce calculations

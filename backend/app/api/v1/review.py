@@ -101,13 +101,11 @@ async def stream_review(
     """
     Stream AI review in real-time using Server-Sent Events
     """
-    print(f"🎬 SSE endpoint called for document {document_id}, model={model}, test={test}")
-    logger.info(f"🎬 SSE endpoint called for document {document_id}, model={model}, test={test}")
-    
+    logger.info(f"SSE endpoint called for document {document_id}, model={model}, test={test}")
+
     async def event_generator():
-        print(f"🚀 Generator started for {document_id}")
         try:
-            logger.info(f"🚀 Starting stream for document {document_id}, model={model}, test={test}")
+            logger.info(f"Starting stream for document {document_id}, model={model}, test={test}")
             
             # Send initial event
             yield f"data: {json.dumps({'type': 'start', 'message': 'Starting review...'})}\n\n"
@@ -115,7 +113,7 @@ async def stream_review(
             
             # Test mode for debugging
             if test:
-                logger.info("🧪 Running in TEST mode")
+                logger.info("Running in TEST mode")
                 yield f"data: {json.dumps({'type': 'info', 'message': 'Test mode enabled'})}\n\n"
                 
                 test_content = "# Test Review\n\nThis is a test review streaming in real-time.\n\n"

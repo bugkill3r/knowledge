@@ -290,43 +290,26 @@ export default function KnowledgeGraph({ collectionId }: KnowledgeGraphProps) {
         }),
         layoutDirection
       );
-      
-      console.log(`[Graph] Setting ${layoutedNodes.length} nodes and ${layoutedEdges.length} edges`);
-      if (layoutedEdges.length > 0) {
-        console.log('[Graph] First 3 edges:', layoutedEdges.slice(0, 3));
-      }
-      
+
       // Verify node IDs exist and deduplicate edges
       const nodeIds = new Set(layoutedNodes.map(n => n.id));
       const seenEdges = new Set<string>();
       const validEdges = layoutedEdges.filter(e => {
         const valid = nodeIds.has(e.source) && nodeIds.has(e.target);
-        if (!valid) {
-          console.warn(`[Graph] Invalid edge: ${e.id}, source: ${e.source} (${nodeIds.has(e.source)}), target: ${e.target} (${nodeIds.has(e.target)})`);
-          return false;
-        }
+        if (!valid) return false;
         
         // Deduplicate by checking both directions
         const edgeKey1 = `${e.source}-${e.target}`;
         const edgeKey2 = `${e.target}-${e.source}`;
         
-        if (seenEdges.has(edgeKey1) || seenEdges.has(edgeKey2)) {
-          console.warn(`[Graph] Duplicate edge: ${e.id}`);
-          return false;
-        }
+        if (seenEdges.has(edgeKey1) || seenEdges.has(edgeKey2)) return false;
         
         seenEdges.add(edgeKey1);
         return true;
       });
-      
-      console.log(`[Graph] Valid unique edges: ${validEdges.length} / ${layoutedEdges.length}`);
-      
-      // Set nodes first, then edges after a small delay to ensure nodes are rendered
+
       setNodes(layoutedNodes);
-      setTimeout(() => {
-        setEdges(validEdges);
-        console.log('[Graph] Edges set after nodes');
-      }, 100);
+      setTimeout(() => setEdges(validEdges), 100);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load graph');
     } finally {
@@ -345,7 +328,6 @@ export default function KnowledgeGraph({ collectionId }: KnowledgeGraphProps) {
       window.open(data.source_url, '_blank');
     } else if (data.entity_type === 'repository' && data.local_path) {
       // Could open in VS Code or show details
-      console.log('Repository:', data);
     } else if (data.entity_type === 'spreadsheet' && data.sheet_url) {
       window.open(data.sheet_url, '_blank');
     }

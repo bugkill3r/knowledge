@@ -53,3 +53,7 @@ Thumbs.db
 GENERIC_KNOWLEDGE_SYSTEM_PLAN.md
 docs/PROGRESS.md
 docs/RESEARCH.md
+docs/CLEANUP_PLAN.md
+
+# Local one-off helpers (e.g. strip-coauthor-msg.sh for rebase)
+scripts/

@@ -125,8 +125,7 @@ export default function StreamingReview({
       }
       
       const result = await response.json()
-      console.log('✅ Saved:', result.vault_path ?? 'review saved')
-      
+
       // Show success notification
       if (result.vault_path) {
         alert(`✅ Reviewed document saved to:\n${result.vault_path}`)
@@ -138,14 +137,12 @@ export default function StreamingReview({
       onClose()
       
     } catch (err: any) {
-      console.error('❌ Save error:', err)
       alert(`Failed to save: ${err.message}`)
     }
   }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(streamedContent)
-    console.log('📋 Copied to clipboard')
   }
 
   return (
