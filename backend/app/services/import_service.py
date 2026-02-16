@@ -288,7 +288,7 @@ class ImportService:
                 doc_id=doc_id,
                 doc_title=doc_title,
                 access_token=self.access_token,
-                vault_path=settings.OBSIDIAN_VAULT_PATH
+                vault_path=settings.effective_obsidian_vault_path
             )
             return result
         except Exception as e:

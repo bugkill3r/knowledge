@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ONBOARDING_KEY } from '@/lib/onboarding'
 
-const ONBOARDING_KEY = 'knowledge_onboarding_done'
 const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Knowledge System'
 
 export default function Home() {

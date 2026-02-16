@@ -331,7 +331,7 @@ async def save_reviewed_document(
                 "message": "Review saved (Obsidian vault not configured)."
             }
         
-        vault_base = settings.OBSIDIAN_VAULT_PATH or ""
+        vault_base = settings.effective_obsidian_vault_path or ""
         review_dir = os.path.join(vault_base, "05 - AI", "AI Reviews")
         os.makedirs(review_dir, exist_ok=True)
         

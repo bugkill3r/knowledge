@@ -13,7 +13,8 @@ import {
   FolderInput,
   Folder,
   Network,
-  Sparkles
+  Sparkles,
+  Settings as SettingsIcon
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ImportForm from '@/components/ImportForm'
@@ -25,13 +26,14 @@ import CodeRepositories from '@/components/CodeRepositories'
 import Collections from '@/components/Collections'
 import KnowledgeGraph from '@/components/KnowledgeGraph'
 import DocumentReview from '@/components/DocumentReview'
+import Settings from '@/components/Settings'
 import { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
-  const [activeTab, setActiveTab] = useState<'import' | 'documents' | 'jobs' | 'search' | 'bulk-import' | 'code' | 'collections' | 'graph' | 'review'>('search')
+  const [activeTab, setActiveTab] = useState<'import' | 'documents' | 'jobs' | 'search' | 'bulk-import' | 'code' | 'collections' | 'graph' | 'review' | 'settings'>('search')
   const [showShortcuts, setShowShortcuts] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
@@ -243,6 +245,18 @@ export default function DashboardPage() {
               <Sparkles className="h-4 w-4 inline mr-2" />
               AI Review
             </button>
+            <button
+              onClick={() => setActiveTab('settings')}
+              className={cn(
+                "px-6 py-2 rounded-md text-sm font-medium transition-all",
+                activeTab === 'settings'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <SettingsIcon className="h-4 w-4 inline mr-2" />
+              Settings
+            </button>
           </div>
         </div>
 
@@ -260,6 +274,7 @@ export default function DashboardPage() {
           {activeTab === 'collections' && <Collections />}
           {activeTab === 'graph' && <KnowledgeGraph />}
           {activeTab === 'review' && <DocumentReview />}
+          {activeTab === 'settings' && <Settings />}
         </div>
 
         {/* Keyboard Shortcuts Help Modal */}

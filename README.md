@@ -65,10 +65,6 @@ No org-specific branding in code. Set `PROJECT_NAME` and `NEXT_PUBLIC_APP_NAME` 
 
 ## Screenshots
 
-**Landing**
-
-![Landing](docs/screenshots/landing.png)
-
 **Onboarding**
 
 ![Onboarding 1](docs/screenshots/onboarding1.png)

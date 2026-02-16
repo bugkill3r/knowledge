@@ -3,6 +3,22 @@ from pydantic_settings import BaseSettings
 from typing import Optional, Literal
 from pathlib import Path
 
+# File storing user-set vault path (overrides env when set). Under backend/data/.
+VAULT_PATH_FILENAME = "vault_path.txt"
+
+
+def _vault_path_file() -> Path:
+    """Path to the file that stores the user-configured vault path."""
+    backend_root = Path(__file__).resolve().parent.parent
+    return backend_root / "data" / VAULT_PATH_FILENAME
+
+
+def write_vault_path(path: str) -> None:
+    """Write user-configured vault path to file. Creates data dir if needed."""
+    p = _vault_path_file()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(path.strip())
+
 
 class Settings(BaseSettings):
     """Settings from environment. No org-specific defaults."""
@@ -46,9 +62,22 @@ class Settings(BaseSettings):
                 vault_path.mkdir(parents=True, exist_ok=True)
 
     @property
+    def effective_obsidian_vault_path(self) -> str:
+        """Vault path: from user-configured file if set, else from env. Read on each access."""
+        try:
+            f = _vault_path_file()
+            if f.exists():
+                raw = f.read_text().strip()
+                if raw:
+                    return raw
+        except Exception:
+            pass
+        return (self.OBSIDIAN_VAULT_PATH or "").strip()
+
+    @property
     def obsidian_enabled(self) -> bool:
         """True if vault sync is configured (documents written to Obsidian)."""
-        return bool((self.OBSIDIAN_VAULT_PATH or "").strip())
+        return bool(self.effective_obsidian_vault_path)
 
     CHROMA_DB_PATH: str = "./data/chromadb"
     # Optional: path to pdf2md CLI (https://github.com/bugkill3r/pdf2md) for PDF image extraction
@@ -80,14 +109,14 @@ class Settings(BaseSettings):
             return "vault"
         if self.OBSIDIAN_VAULT_NAME:
             return self.OBSIDIAN_VAULT_NAME
-        return Path(self.OBSIDIAN_VAULT_PATH or "").name or "vault"
+        return Path(self.effective_obsidian_vault_path or "").name or "vault"
 
     @property
     def vault_content_root(self) -> Path:
         """Root folder inside the vault for this instance. Only valid when obsidian_enabled."""
         if not self.obsidian_enabled:
             return Path()
-        root = Path(self.OBSIDIAN_VAULT_PATH or "")
+        root = Path(self.effective_obsidian_vault_path or "")
         if self.VAULT_ROOT_FOLDER:
             return root / self.VAULT_ROOT_FOLDER
         return root

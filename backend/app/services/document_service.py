@@ -63,7 +63,7 @@ class DocumentService:
         # Ensure vault structure exists
         settings.ensure_vault_structure()
         # Build full path
-        full_path = Path(settings.OBSIDIAN_VAULT_PATH or "") / document.vault_path
+        full_path = Path(settings.effective_obsidian_vault_path or "") / document.vault_path
         full_path.parent.mkdir(parents=True, exist_ok=True)
         
         # Build frontmatter
@@ -213,8 +213,8 @@ class DocumentService:
             return False
         
         # Delete from vault (only when Obsidian is enabled)
-        if settings.obsidian_enabled and settings.OBSIDIAN_VAULT_PATH:
-            vault_file = Path(settings.OBSIDIAN_VAULT_PATH) / document.vault_path
+        if settings.obsidian_enabled and settings.effective_obsidian_vault_path:
+            vault_file = Path(settings.effective_obsidian_vault_path) / document.vault_path
             if vault_file.exists():
                 vault_file.unlink()
         
